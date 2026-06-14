@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ExperiaPro – Competency Certification Framework</title>
+<style>
+  :root{--navy:#0d1b2a;--navy2:#1b2d45;--gold:#c9a84c;--gold2:#e8c97a;--light:#f5f3ee;--white:#fff;--gray:#6b7280;--lgray:#e5e1d8;--font:'Georgia',serif;--sans:'Segoe UI',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--sans);background:var(--light);color:var(--navy);min-height:100vh;}
+
+  /* NAV */
+  nav{background:var(--navy);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px #0006;}
+  .logo{font-family:var(--font);font-size:1.5rem;color:var(--gold);font-weight:bold;letter-spacing:1px;cursor:pointer;}
+  .logo span{color:var(--white);font-size:.85rem;display:block;font-family:var(--sans);font-weight:300;letter-spacing:2px;margin-top:-4px;}
+  .nav-links{display:flex;gap:1.5rem;align-items:center;}
+  .nav-links a{color:#ccc;text-decoration:none;font-size:.9rem;transition:.2s;}
+  .nav-links a:hover{color:var(--gold);}
+  .btn-portal{background:var(--gold);color:var(--navy);padding:.45rem 1.2rem;border-radius:4px;font-weight:600;font-size:.9rem;cursor:pointer;border:none;transition:.2s;}
+  .btn-portal:hover{background:var(--gold2);}
+
+  /* PAGES */
+  .page{display:none;animation:fadeIn .3s ease;}
+  .page.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--navy) 60%,var(--navy2));color:var(--white);padding:6rem 2rem 5rem;text-align:center;}
+  .hero h1{font-family:var(--font);font-size:clamp(2rem,5vw,3.2rem);margin-bottom:1rem;line-height:1.2;}
+  .hero h1 span{color:var(--gold);}
+  .hero p{font-size:1.15rem;color:#c0bdb5;max-width:640px;margin:0 auto 2.2rem;line-height:1.7;}
+  .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{background:var(--gold);color:var(--navy);padding:.75rem 2rem;border-radius:4px;font-weight:700;font-size:1rem;cursor:pointer;border:none;transition:.2s;}
+  .btn-primary:hover{background:var(--gold2);}
+  .btn-outline{background:transparent;color:var(--white);padding:.75rem 2rem;border-radius:4px;font-weight:600;font-size:1rem;cursor:pointer;border:2px solid var(--gold);transition:.2s;}
+  .btn-outline:hover{background:var(--gold);color:var(--navy);}
+
+  /* SECTIONS */
+  section{padding:4rem 2rem;max-width:1100px;margin:0 auto;}
+  .section-title{font-family:var(--font);font-size:1.9rem;color:var(--navy);margin-bottom:.5rem;text-align:center;}
+  .section-sub{color:var(--gray);text-align:center;margin-bottom:2.5rem;font-size:1rem;}
+  .divider{width:60px;height:3px;background:var(--gold);margin:.8rem auto 2rem;}
+
+  /* STEPS */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;}
+  .step{background:var(--white);border-radius:8px;padding:1.8rem 1.4rem;text-align:center;box-shadow:0 2px 10px #0001;border-top:4px solid var(--gold);}
+  .step-num{width:42px;height:42px;background:var(--navy);color:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;margin:0 auto 1rem;}
+  .step h3{font-size:1rem;margin-bottom:.5rem;color:var(--navy);}
+  .step p{font-size:.88rem;color:var(--gray);line-height:1.6;}
+
+  /* STAKEHOLDERS */
+  .stakeholders{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem;}
+  .stake-card{background:var(--white);border-radius:8px;padding:1.8rem;box-shadow:0 2px 10px #0001;border-left:5px solid var(--gold);}
+  .stake-icon{font-size:2rem;margin-bottom:.8rem;}
+  .stake-card h3{font-family:var(--font);font-size:1.1rem;margin-bottom:.5rem;color:var(--navy);}
+  .stake-card p{font-size:.88rem;color:var(--gray);line-height:1.6;}
+
+  /* SCOPE */
+  .scope-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;}
+  .scope-item{background:var(--navy);color:var(--white);padding:1.2rem;border-radius:8px;text-align:center;font-size:.9rem;line-height:1.5;}
+  .scope-item span{display:block;font-size:1.6rem;margin-bottom:.5rem;}
+
+  /* CTA BAND */
+  .cta-band{background:var(--navy);color:var(--white);padding:3.5rem 2rem;text-align:center;}
+  .cta-band h2{font-family:var(--font);font-size:2rem;margin-bottom:.8rem;}
+  .cta-band p{color:#bbb;margin-bottom:1.8rem;}
+
+  /* FOOTER */
+  footer{background:#07101a;color:#888;text-align:center;padding:1.5rem;font-size:.85rem;}
+
+  /* PORTAL */
+  .portal-wrap{max-width:1100px;margin:0 auto;padding:2rem;}
+  .portal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;}
+  .portal-header h2{font-family:var(--font);font-size:1.6rem;color:var(--navy);}
+  .role-tabs{display:flex;gap:.5rem;flex-wrap:wrap;}
+  .role-tab{padding:.45rem 1.1rem;border-radius:4px;border:2px solid var(--navy2);background:transparent;cursor:pointer;font-size:.88rem;color:var(--navy);font-weight:600;transition:.2s;}
+  .role-tab.active,.role-tab:hover{background:var(--navy);color:var(--gold);}
+
+  .dashboard{display:none;}
+  .dashboard.active{display:block;}
+
+  /* CARDS ROW */
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem;}
+  .stat-card{background:var(--white);border-radius:8px;padding:1.2rem;text-align:center;box-shadow:0 2px 8px #0001;border-bottom:3px solid var(--gold);}
+  .stat-num{font-size:1.8rem;font-weight:700;color:var(--navy);font-family:var(--font);}
+  .stat-label{font-size:.8rem;color:var(--gray);margin-top:.2rem;}
+
+  /* ASSIGNMENT TABLE */
+  .table-wrap{background:var(--white);border-radius:8px;box-shadow:0 2px 8px #0001;overflow:hidden;margin-bottom:2rem;}
+  .table-head{background:var(--navy);color:var(--gold);padding:1rem 1.5rem;font-family:var(--font);font-size:1rem;display:flex;justify-content:space-between;align-items:center;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--navy2);color:var(--lgray);padding:.7rem 1rem;text-align:left;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px;}
+  td{padding:.75rem 1rem;font-size:.88rem;border-bottom:1px solid var(--lgray);}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f9f7f2;}
+  .badge{padding:.2rem .6rem;border-radius:12px;font-size:.75rem;font-weight:600;}
+  .badge-green{background:#d1fae5;color:#065f46;}
+  .badge-blue{background:#dbeafe;color:#1e40af;}
+  .badge-yellow{background:#fef3c7;color:#92400e;}
+  .badge-red{background:#fee2e2;color:#991b1b;}
+
+  /* AI PANEL */
+  .ai-panel{background:var(--white);border-radius:8px;box-shadow:0 2px 8px #0001;overflow:hidden;margin-bottom:2rem;}
+  .ai-panel-head{background:linear-gradient(90deg,var(--navy),var(--navy2));color:var(--gold);padding:1rem 1.5rem;font-family:var(--font);font-size:1rem;display:flex;align-items:center;gap:.6rem;}
+  .ai-panel-body{padding:1.2rem 1.5rem;}
+  .ai-input-row{display:flex;gap:.7rem;margin-bottom:.8rem;flex-wrap:wrap;}
+  .ai-input{flex:1;padding:.6rem .9rem;border:1.5px solid var(--lgray);border-radius:4px;font-size:.9rem;min-width:180px;}
+  .ai-input:focus{outline:none;border-color:var(--gold);}
+  .btn-ai{background:var(--navy);color:var(--gold);border:none;padding:.6rem 1.3rem;border-radius:4px;cursor:pointer;font-weight:600;font-size:.88rem;transition:.2s;}
+  .btn-ai:hover{background:var(--navy2);}
+  .ai-output{background:var(--light);border-radius:6px;padding:1rem;font-size:.88rem;line-height:1.7;color:var(--navy);min-height:60px;white-space:pre-wrap;}
+  .ai-output.loading{color:var(--gray);font-style:italic;}
+
+  /* CHATBOT */
+  .chat-wrap{position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;}
+  .chat-toggle{width:56px;height:56px;background:var(--gold);border-radius:50%;border:none;cursor:pointer;font-size:1.6rem;box-shadow:0 4px 16px #0004;display:flex;align-items:center;justify-content:center;}
+  .chat-box{width:340px;height:460px;background:var(--white);border-radius:12px;box-shadow:0 8px 32px #0003;display:none;flex-direction:column;overflow:hidden;margin-bottom:.8rem;}
+  .chat-box.open{display:flex;}
+  .chat-head{background:var(--navy);color:var(--gold);padding:.9rem 1.2rem;font-family:var(--font);font-size:1rem;display:flex;justify-content:space-between;align-items:center;}
+  .chat-msgs{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem;}
+  .msg{max-width:85%;padding:.6rem .9rem;border-radius:10px;font-size:.85rem;line-height:1.5;}
+  .msg.bot{background:var(--light);align-self:flex-start;border-bottom-left-radius:2px;}
+  .msg.user{background:var(--navy);color:var(--white);align-self:flex-end;border-bottom-right-radius:2px;}
+  .chat-input-row{display:flex;border-top:1px solid var(--lgray);padding:.7rem;}
+  .chat-input{flex:1;border:none;outline:none;font-size:.88rem;padding:.3rem .5rem;}
+  .chat-send{background:var(--gold);border:none;color:var(--navy);padding:.4rem .9rem;border-radius:4px;cursor:pointer;font-weight:700;}
+
+  /* FEEDBACK FORM */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  @media(max-width:600px){.form-grid{grid-template-columns:1fr;}}
+  .form-group{display:flex;flex-direction:column;gap:.3rem;}
+  .form-group label{font-size:.82rem;font-weight:600;color:var(--navy);}
+  .form-group input,.form-group select,.form-group textarea{padding:.55rem .8rem;border:1.5px solid var(--lgray);border-radius:4px;font-size:.88rem;font-family:var(--sans);}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);}
+  .full-col{grid-column:1/-1;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="showPage('home')">ExperiaPro<span>Competency · Experience · Certification</span></div>
+  <div class="nav-links">
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="scrollTo2('how')">How It Works</a>
+    <a href="#" onclick="scrollTo2('stakeholders')">Stakeholders</a>
+    <a href="#" onclick="scrollTo2('scope')">Scope</a>
+    <button class="btn-portal" onclick="showPage('portal')">Member Portal</button>
+  </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Bridging <span>Real-World Experience</span><br>With Certified Competency</h1>
+    <p>ExperiaPro connects problem owners, emerging professionals, and accreditors in a structured framework that turns real operational challenges into verifiable credentials.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('portal')">Access Member Portal</button>
+      <button class="btn-outline" onclick="scrollTo2('how')">Learn How It Works</button>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="section-title">How It Works</div>
+    <div class="divider"></div>
+    <p class="section-sub">A transparent, end-to-end process from real problem to certified competency.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h3>Problem Submission</h3><p>Organizations and institutions submit real-world operational challenges to the platform.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Participant Matching</h3><p>Qualified students and emerging professionals are matched to suitable assignments.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Guided Execution</h3><p>Participants solve problems in supervised real-world or simulation environments.</p></div>
+      <div class="step"><div class="step-num">4</div><h3>Accreditor Evaluation</h3><p>Independent experts assess both technical outcomes and professional conduct.</p></div>
+      <div class="step"><div class="step-num">5</div><h3>Certification Awarded</h3><p>Successful participants receive competency certificates and detailed feedback reports.</p></div>
+    </div>
+  </section>
+
+  <!-- STAKEHOLDERS -->
+  <section id="stakeholders" style="background:var(--white);max-width:100%;padding:4rem 2rem;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-title">Key Stakeholders</div>
+    <div class="divider"></div>
+    <p class="section-sub">Every role in the ExperiaPro ecosystem plays a critical part.</p>
+    <div class="stakeholders">
+      <div class="stake-card"><div class="stake-icon">🏢</div><h3>Problem Owners</h3><p>Organizations, institutions, and individuals who define and submit real-world assignments, providing context, resources, and operational access.</p></div>
+      <div class="stake-card"><div class="stake-icon">🎓</div><h3>Problem Solvers</h3><p>Students and emerging professionals who engage with assignments, develop solutions, and demonstrate competency in authentic work settings.</p></div>
+      <div class="stake-card"><div class="stake-icon">⚖️</div><h3>Accreditors</h3><p>Independent experts who observe, evaluate, and certify participant performance based on defined competency frameworks and quality standards.</p></div>
+      <div class="stake-card"><div class="stake-icon">🌍</div><h3>Beneficiaries</h3><p>Communities, organizations, and end users who gain direct value from the solutions implemented through the program.</p></div>
+    </div>
+  </div>
+  </section>
+
+  <!-- SCOPE -->
+  <section id="scope">
+    <div class="section-title">Scope of Work</div>
+    <div class="divider"></div>
+    <p class="section-sub">ExperiaPro supports a wide range of applied, interdisciplinary assignments.</p>
+    <div class="scope-grid">
+      <div class="scope-item"><span>📊</span>Data Collection, Processing & Analysis</div>
+      <div class="scope-item"><span>💻</span>Software Development & Systems Design</div>
+      <div class="scope-item"><span>⚙️</span>Engineering Design & Prototyping</div>
+      <div class="scope-item"><span>🔬</span>Applied Research & Field Investigations</div>
+      <div class="scope-item"><span>🏭</span>Operational & Process Improvement</div>
+      <div class="scope-item"><span>📋</span>Project Management & Planning</div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATION -->
+  <section style="background:var(--white);max-width:100%;padding:4rem 2rem;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-title">Assessment & Certification</div>
+    <div class="divider"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;">
+      <div style="background:var(--light);border-radius:8px;padding:1.8rem;border-left:5px solid var(--gold);">
+        <h3 style="font-family:var(--font);margin-bottom:.8rem;">Competency-Based Certification</h3>
+        <p style="font-size:.9rem;color:var(--gray);line-height:1.7;">Reflects demonstrated technical skills, applied knowledge, and workplace readiness — suitable for professional portfolios.</p>
+      </div>
+      <div style="background:var(--light);border-radius:8px;padding:1.8rem;border-left:5px solid var(--gold);">
+        <h3 style="font-family:var(--font);margin-bottom:.8rem;">Performance Credential Record</h3>
+        <p style="font-size:.9rem;color:var(--gray);line-height:1.7;">A verifiable performance record covering analytical ability, communication, teamwork, ethics, and time management.</p>
+      </div>
+      <div style="background:var(--light);border-radius:8px;padding:1.8rem;border-left:5px solid var(--gold);">
+        <h3 style="font-family:var(--font);margin-bottom:.8rem;">Developmental Feedback Report</h3>
+        <p style="font-size:.9rem;color:var(--gray);line-height:1.7;">AI-powered structured report outlining strengths, improvement areas, and actionable recommendations for future growth.</p>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <h2>Ready to Join ExperiaPro?</h2>
+    <p>Whether you're a problem owner, a participant, or an accreditor — your role matters in this ecosystem.</p>
+    <button class="btn-primary" onclick="showPage('portal')">Enter Member Portal</button>
+  </div>
+
+  <footer>© 2026 ExperiaPro – Structured Experiential Learning & Competency Certification Framework. All rights reserved.</footer>
+</div>
+
+<!-- ===== PORTAL PAGE ===== -->
+<div class="page" id="page-portal">
+<div class="portal-wrap">
+  <div class="portal-header">
+    <div>
+      <h2>Member Portal</h2>
+      <p style="color:var(--gray);font-size:.9rem;">Select your role to view your dashboard</p>
+    </div>
+    <div class="role-tabs">
+      <button class="role-tab active" onclick="switchRole('owner')">🏢 Problem Owner</button>
+      <button class="role-tab" onclick="switchRole('solver')">🎓 Participant</button>
+      <button class="role-tab" onclick="switchRole('accreditor')">⚖️ Accreditor</button>
+    </div>
+  </div>
+
+  <!-- PROBLEM OWNER DASHBOARD -->
+  <div class="dashboard active" id="dash-owner">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">Active Assignments</div></div>
+      <div class="stat-card"><div class="stat-num">24</div><div class="stat-label">Participants Engaged</div></div>
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Completed Projects</div></div>
+      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Pending Review</div></div>
+    </div>
+
+    <!-- AI Assignment Generator -->
+    <div class="ai-panel">
+      <div class="ai-panel-head">🤖 AI Assignment Description Generator</div>
+      <div class="ai-panel-body">
+        <p style="font-size:.85rem;color:var(--gray);margin-bottom:.9rem;">Describe your problem and let AI generate a structured assignment brief.</p>
+        <div class="ai-input-row">
+          <input class="ai-input" id="owner-topic" placeholder="e.g. Improve waste management in our municipality"/>
+          <button class="btn-ai" onclick="generateAssignment()">Generate Brief</button>
+        </div>
+        <div class="ai-output" id="owner-output">Your structured assignment brief will appear here...</div>
+      </div>
+    </div>
+
+    <!-- Assignments Table -->
+    <div class="table-wrap">
+      <div class="table-head">📋 My Assignments <button class="btn-ai" style="font-size:.8rem;padding:.35rem .9rem;">+ New Assignment</button></div>
+      <table>
+        <thead><tr><th>Title</th><th>Domain</th><th>Participants</th><th>Deadline</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Supply Chain Optimization</td><td>Operations</td><td>4</td><td>2026-07-15</td><td><span class="badge badge-green">Active</span></td></tr>
+          <tr><td>Hospital Queue Analysis</td><td>Data Analysis</td><td>3</td><td>2026-07-30</td><td><span class="badge badge-blue">In Progress</span></td></tr>
+          <tr><td>Smart Energy Monitoring</td><td>Engineering</td><td>2</td><td>2026-08-10</td><td><span class="badge badge-yellow">Pending Match</span></td></tr>
+          <tr><td>Community Water Survey</td><td>Field Research</td><td>5</td><td>2026-06-28</td><td><span class="badge badge-green">Active</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PARTICIPANT DASHBOARD -->
+  <div class="dashboard" id="dash-solver">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Active Assignments</div></div>
+      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Certifications Earned</div></div>
+      <div class="stat-card"><div class="stat-num">87%</div><div class="stat-label">Avg. Competency Score</div></div>
+      <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">Awaiting Evaluation</div></div>
+    </div>
+
+    <!-- AI Feedback Report -->
+    <div class="ai-panel">
+      <div class="ai-panel-head">🤖 AI Competency Feedback Report Generator</div>
+      <div class="ai-panel-body">
+        <p style="font-size:.85rem;color:var(--gray);margin-bottom:.9rem;">Enter your assignment details to generate a personalised AI feedback report.</p>
+        <div class="form-grid" style="margin-bottom:.9rem;">
+          <div class="form-group"><label>Your Name</label><input id="s-name" placeholder="e.g. Asel Nurlanovna"/></div>
+          <div class="form-group"><label>Assignment Title</label><input id="s-assign" placeholder="e.g. Supply Chain Optimization"/></div>
+          <div class="form-group"><label>Domain</label><select id="s-domain"><option>Data Analysis</option><option>Software Development</option><option>Engineering</option><option>Field Research</option><option>Operations</option></select></div>
+          <div class="form-group"><label>Self-Assessment (brief)</label><input id="s-self" placeholder="e.g. Completed data pipeline, struggled with presentation"/></div>
+        </div>
+        <button class="btn-ai" onclick="generateFeedback()">Generate Feedback Report</button>
+        <div class="ai-output" style="margin-top:.9rem;" id="solver-output">Your personalised competency feedback report will appear here...</div>
+      </div>
+    </div>
+
+    <!-- My Assignments -->
+    <div class="table-wrap">
+      <div class="table-head">📚 My Assignments</div>
+      <table>
+        <thead><tr><th>Assignment</th><th>Owner</th><th>Domain</th><th>Due</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Hospital Queue Analysis</td><td>City Health Dept.</td><td>Data Analysis</td><td>2026-07-30</td><td><span class="badge badge-blue">In Progress</span></td></tr>
+          <tr><td>Community Water Survey</td><td>Municipal Council</td><td>Field Research</td><td>2026-06-28</td><td><span class="badge badge-green">Active</span></td></tr>
+          <tr><td>Retail Inventory System</td><td>FreshMart Ltd.</td><td>Software Dev</td><td>2026-05-10</td><td><span class="badge badge-green">Certified ✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ACCREDITOR DASHBOARD -->
+  <div class="dashboard" id="dash-accreditor">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num">11</div><div class="stat-label">Pending Evaluations</div></div>
+      <div class="stat-card"><div class="stat-num">38</div><div class="stat-label">Certifications Issued</div></div>
+      <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Active Reviews</div></div>
+      <div class="stat-card"><div class="stat-num">96%</div><div class="stat-label">Quality Score</div></div>
+    </div>
+
+    <!-- AI Evaluation Summary -->
+    <div class="ai-panel">
+      <div class="ai-panel-head">🤖 AI Evaluation Summary Assistant</div>
+      <div class="ai-panel-body">
+        <p style="font-size:.85rem;color:var(--gray);margin-bottom:.9rem;">Input participant scores and observations — AI will generate a structured evaluation summary.</p>
+        <div class="form-grid" style="margin-bottom:.9rem;">
+          <div class="form-group"><label>Participant Name</label><input id="a-name" placeholder="e.g. Roshan Perera"/></div>
+          <div class="form-group"><label>Assignment</label><input id="a-assign" placeholder="e.g. Smart Energy Monitoring"/></div>
+          <div class="form-group"><label>Technical Score (0–100)</label><input id="a-tech" type="number" min="0" max="100" placeholder="e.g. 78"/></div>
+          <div class="form-group"><label>Professional Conduct Score (0–100)</label><input id="a-conduct" type="number" min="0" max="100" placeholder="e.g. 85"/></div>
+          <div class="form-group full-col"><label>Observations</label><textarea id="a-obs" rows="2" placeholder="e.g. Strong analytical skills, needs improvement in stakeholder communication..."></textarea></div>
+        </div>
+        <button class="btn-ai" onclick="generateEvaluation()">Generate Evaluation Summary</button>
+        <div class="ai-output" style="margin-top:.9rem;" id="accreditor-output">Structured evaluation summary will appear here...</div>
+      </div>
+    </div>
+
+    <!-- Pending Evaluations -->
+    <div class="table-wrap">
+      <div class="table-head">📝 Pending Evaluations</div>
+      <table>
+        <thead><tr><th>Participant</th><th>Assignment</th><th>Submitted</th><th>Priority</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>Nadia Al-Rashid</td><td>Supply Chain Optimization</td><td>2026-06-10</td><td><span class="badge badge-red">High</span></td><td><button class="btn-ai" style="padding:.25rem .7rem;font-size:.78rem;">Review</button></td></tr>
+          <tr><td>James Kwabena</td><td>Hospital Queue Analysis</td><td>2026-06-11</td><td><span class="badge badge-yellow">Medium</span></td><td><button class="btn-ai" style="padding:.25rem .7rem;font-size:.78rem;">Review</button></td></tr>
+          <tr><td>Priya Subramaniam</td><td>Community Water Survey</td><td>2026-06-12</td><td><span class="badge badge-blue">Low</span></td><td><button class="btn-ai" style="padding:.25rem .7rem;font-size:.78rem;">Review</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- end portal-wrap -->
+<footer style="margin-top:2rem;">© 2026 ExperiaPro – Structured Experiential Learning & Competency Certification Framework. All rights reserved.</footer>
+</div>
+
+<!-- CHATBOT -->
+<div class="chat-wrap">
+  <div class="chat-box" id="chatBox">
+    <div class="chat-head">🤖 ExperiaPro Assistant <span style="cursor:pointer;font-size:1.2rem;" onclick="toggleChat()">✕</span></div>
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="msg bot">Hello! I'm your ExperiaPro AI assistant. Ask me anything about the platform, assignments, certifications, or how to get started.</div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="chat-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+  <button class="chat-toggle" onclick="toggleChat()">💬</button>
+</div>
+
+<script>
+// PAGE NAV
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
+}
+function scrollTo2(id){
+  showPage('home');
+  setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});},100);
+}
+
+// ROLE TABS
+function switchRole(r){
+  document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.dashboard').forEach(d=>d.classList.remove('active'));
+  document.getElementById('dash-'+r).classList.add('active');
+}
+
+// CLAUDE API
+async function callClaude(prompt){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-6',
+      max_tokens:1000,
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  const d=await res.json();
+  return d.content?.map(c=>c.text||'').join('\n')||'No response received.';
+}
+
+// AI: GENERATE ASSIGNMENT
+async function generateAssignment(){
+  const topic=document.getElementById('owner-topic').value.trim();
+  if(!topic){alert('Please enter a problem topic.');return;}
+  const el=document.getElementById('owner-output');
+  el.className='ai-output loading';el.textContent='Generating structured assignment brief...';
+  const prompt=`You are an expert in experiential learning program design. Generate a structured work assignment brief for the following real-world problem submitted to ExperiaPro, a competency-based learning platform:
+
+Problem: "${topic}"
+
+Format the brief with these sections:
+1. Assignment Title
+2. Background & Context
+3. Problem Statement
+4. Objectives (3–4 bullet points)
+5. Expected Deliverables
+6. Skills & Competencies Required
+7. Duration & Timeline (suggest realistic timeframe)
+8. Resources Provided
+
+Keep it professional, concise, and suitable for university students or emerging professionals.`;
+  try{const r=await callClaude(prompt);el.className='ai-output';el.textContent=r;}
+  catch(e){el.className='ai-output';el.textContent='Error: '+e.message;}
+}
+
+// AI: GENERATE FEEDBACK
+async function generateFeedback(){
+  const name=document.getElementById('s-name').value.trim();
+  const assign=document.getElementById('s-assign').value.trim();
+  const domain=document.getElementById('s-domain').value;
+  const self=document.getElementById('s-self').value.trim();
+  if(!name||!assign){alert('Please fill in your name and assignment title.');return;}
+  const el=document.getElementById('solver-output');
+  el.className='ai-output loading';el.textContent='Generating your personalised feedback report...';
+  const prompt=`You are an expert competency assessor for ExperiaPro, a structured experiential learning and certification platform. Generate a professional Developmental Feedback Report for a participant.
+
+Participant: ${name}
+Assignment: ${assign}
+Domain: ${domain}
+Self-Assessment: ${self||'Not provided'}
+
+Write a structured report with these sections:
+1. Performance Summary
+2. Key Strengths Demonstrated (3 specific points)
+3. Areas Requiring Improvement (2–3 points)
+4. Actionable Recommendations for Development
+5. Certification Readiness Assessment (Ready / Needs Further Development)
+
+Be constructive, specific, professional, and encouraging. Format clearly with section headers.`;
+  try{const r=await callClaude(prompt);el.className='ai-output';el.textContent=r;}
+  catch(e){el.className='ai-output';el.textContent='Error: '+e.message;}
+}
+
+// AI: GENERATE EVALUATION
+async function generateEvaluation(){
+  const name=document.getElementById('a-name').value.trim();
+  const assign=document.getElementById('a-assign').value.trim();
+  const tech=document.getElementById('a-tech').value;
+  const conduct=document.getElementById('a-conduct').value;
+  const obs=document.getElementById('a-obs').value.trim();
+  if(!name||!assign){alert('Please fill in participant name and assignment.');return;}
+  const el=document.getElementById('accreditor-output');
+  el.className='ai-output loading';el.textContent='Generating evaluation summary...';
+  const prompt=`You are a senior accreditor on the ExperiaPro platform. Generate a formal Competency Evaluation Summary based on the following data:
+
+Participant: ${name}
+Assignment: ${assign}
+Technical Performance Score: ${tech||'N/A'}/100
+Professional Conduct Score: ${conduct||'N/A'}/100
+Accreditor Observations: ${obs||'Not provided'}
+
+Write a formal evaluation summary with:
+1. Overall Performance Assessment
+2. Technical Competency Evaluation
+3. Professional Conduct Evaluation
+4. Notable Observations
+5. Certification Recommendation (Award Certification / Conditional Pass / Requires Reassessment)
+6. Official Remarks
+
+Use formal, professional language appropriate for an accreditation body.`;
+  try{const r=await callClaude(prompt);el.className='ai-output';el.textContent=r;}
+  catch(e){el.className='ai-output';el.textContent='Error: '+e.message;}
+}
+
+// CHATBOT
+let chatHistory=[];
+function toggleChat(){
+  const b=document.getElementById('chatBox');
+  b.classList.toggle('open');
+}
+async function sendChat(){
+  const inp=document.getElementById('chatInput');
+  const msg=inp.value.trim();if(!msg)return;
+  inp.value='';
+  const msgs=document.getElementById('chatMsgs');
+  msgs.innerHTML+=`<div class="msg user">${msg}</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  chatHistory.push({role:'user',content:msg});
+  msgs.innerHTML+=`<div class="msg bot" id="typing">Thinking...</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  const sysPrompt=`You are a helpful, professional AI assistant for ExperiaPro, a structured experiential learning and competency certification platform. The platform connects:
+- Problem Owners (organizations submitting real-world assignments)
+- Participants (students/emerging professionals solving them)
+- Accreditors (experts who evaluate and certify)
+- Beneficiaries (end users of solutions)
+
+Answer questions about the platform, how to participate, certifications, assignments, the evaluation process, and career development. Be concise, warm, and professional.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system:sysPrompt,
+        messages:chatHistory
+      })
+    });
+    const d=await res.json();
+    const reply=d.content?.map(c=>c.text||'').join('\n')||'Sorry, I could not respond.';
+    chatHistory.push({role:'assistant',content:reply});
+    document.getElementById('typing').remove();
+    msgs.innerHTML+=`<div class="msg bot">${reply.replace(/\n/g,'<br>')}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  }catch(e){
+    document.getElementById('typing').textContent='Error: '+e.message;
+  }
+}
+</script>
+</body>
+</html>
